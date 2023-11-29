@@ -1,12 +1,11 @@
-const userModel = require ('./../modells/UserModel');
-
-const userController = {}
+const UserModel = require('../modells/UserModel.js');
+const userController = {};
 
 // Ver usuarios
 userController.verUsuarios = async (req, res) => {
     try {
-        const listaUsuarios = await userModel.findAll();
-
+        const listaUsuarios = await UserModel.find();
+        
         return res.json(listaUsuarios);
     } catch (error) {
         return res.status(500).json({
@@ -21,18 +20,18 @@ userController.verUsuario = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const usuarioEncontrado = await userModel.findByPk(id);
-
-        if (usuarioEncontrado) {
-            return res.json(usuarioEncontrado);
-        } else {
-            return res.status(500).json({
-                error: 'Usuario inexistente.'
-            });
-        }
+        const usuarioEncontrado = await UserModel.findById(id);
+        
+        return res.json(usuarioEncontrado);
     } catch (error) {
+        let mensaje = 'Ocurrió un error interno al intentar obtener el usuario';
+
+        if (error.kind === 'ObjectId') {
+            mensaje = 'No se pudo obtener el usuario';
+        }
+
         return res.status(500).json({
-            mensaje: 'Ocurrió un error al buscar el usuario',
+            mensaje: mensaje,
             error: error
         });
     }
@@ -41,25 +40,18 @@ userController.verUsuario = async (req, res) => {
 // Crear nuevo usuario
 userController.createUser = async (req, res) => {
     try {
-        const { nombre, contrasenia, correo, urlAvatar  } = req.body;
-
-        const nuevoUsuario = await userModel.create({
-            username: nombre,
-            password: contrasenia,
-            email : correo,
-            avatarURL: urlAvatar,
+        const { username, password, email, avatarURL } = req.body;
+        const nuevoUsuario = new UserModel({
+            username: username,
+            password: password,
+            email: email,
+            avatarURL: avatarURL,
         });
-
-        if (nuevoUsuario) {
-            return res.json({ mensaje: 'Usuario creado correctamente.' });
-        } else {
-            return res.status(500).json({
-                error: 'No se pudo crear el usuario.'
-            });
-        }
+        await nuevoUsuario.save();
+        return res.json({ mensaje: 'Usuario creado con éxito' });
     } catch (error) {
         return res.status(500).json({
-            mensaje: 'Ocurrió un error al intentar crear el usuario',
+            mensaje: 'Ocurrió un error interno al intentar crear el usuario',
             error: error
         });
     }
@@ -68,35 +60,17 @@ userController.createUser = async (req, res) => {
 // Editar usuario
 userController.editarUsuario = async (req, res) => {
     try {
-        const { id, nombres, apellidos } = req.body;
+        const { id, username, password, email, avatarURL } = req.body;
 
-        if (!id || !nombres || !apellidos) {
-            return res.status(500).json({
-                error: 'Faltan datos'
-            });
-        }
-
-        const usuarioEditado = await userModel.update(
-            {
-                username: nombres,
-                password: apellidos,
-            }, {
-                where: {
-                    _id: id,
-                }
-            }
+        await UserModel.findByIdAndUpdate(
+            id,
+            { username: username, password: password, email: email, avatarURL: avatarURL  }
         );
 
-        if (usuarioEditado) {
-            return res.json({ mensaje: 'Usuario editado con exito' });
-        } else {
-            return res.status(500).json({
-                error: 'No se pudo editar el usuario.'
-            });
-        }
+        return res.json({ mensaje: 'Usuario actualizado con éxito' });
     } catch (error) {
         return res.status(500).json({
-            mensaje: 'Ocurrió un error al intentar editar  el usuario',
+            mensaje: 'Ocurrió un error interno al intentar editar el usuario',
             error: error
         });
     }
@@ -105,21 +79,15 @@ userController.editarUsuario = async (req, res) => {
 // Eliminar usuario
 userController.eliminarUsuario = async (req, res) => {
     try {
-        console.log(req.body)
         const { id } = req.body;
+        console.log('el id es ',id)
 
-        const eliminado = await userModel.destroy({ where: { _id: id } });
+        await UserModel.findByIdAndDelete(id);
 
-        if (eliminado) {
-            return res.json({ mensaje: 'Se elimino el usuario' });
-        } else {
-            return res.status(500).json({
-                mensaje: 'No se pudo eliminar el usuario.',
-            });
-        }
+        return res.json({ mensaje: 'Usuario eliminado con éxito' });
     } catch (error) {
         return res.status(500).json({
-            mensaje: 'Ocurrió un error al intentar eliminar el usuario',
+            mensaje: 'Ocurrió un error interno al intentar eliminar el usuario',
             error: error
         });
     }

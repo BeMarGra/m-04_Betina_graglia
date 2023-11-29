@@ -6,13 +6,15 @@ const {
     createUser,
     editarUsuario,
     eliminarUsuario,
+
 } = require('./../controllers/usersControllers');
 
 // Ver usuarios
 userRoutes.get('/usuarios', verUsuarios);
 
 // Ver usuario
-userRoutes.get('/usuario/:id', verUsuario);
+userRoutes.get('/usuario:id', verUsuario);
+
 
 // Crear usuario
 userRoutes.post('/usuario', createUser);
@@ -23,4 +25,5 @@ userRoutes.put('/usuario', editarUsuario);
 // Eliminar usuario
 userRoutes.delete('/usuario', eliminarUsuario);
 
-module.exports = userRoutes;
+
+module.exports = userRoutes

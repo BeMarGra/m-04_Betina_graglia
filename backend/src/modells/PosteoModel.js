@@ -1,17 +1,24 @@
 const { Schema, model } = require('mongoose');
 
-const PosteoSchema = new Schema({
-    title: String,
-    description: String,
-    autor: {
+const posteoSchema = new Schema({
+
+    titulo: String,
+    descripcion: String,
+    autor: [{
         type: Schema.Types.ObjectId,
-        ref: 'user',
+        ref: 'user'
+    }],
+    comentario: [{
+        type: Schema.Types.ObjectId,
+        ref: 'coment'
+    }],
+    imagenURL: String,
+    createAt: {
+        type: Date,
+        default: Date.now,
     },
-    comments: String,
-    imageURL: String,
-    //fecha: {createDate:createdAt},
 });
 
-const PosteoModel = model('posteo', PosteoSchema);
+const PosteoModel = model('posteo', posteoSchema);
 
 module.exports = PosteoModel;
