@@ -1,23 +1,26 @@
-import { Card, Button } from 'react-bootstrap';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 
-const CardPosteo = () =>{
+const CardPosteo = (props) =>{
+    const { posteos } = props;
+
     return (
         <>
-            <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src="holder.js/100px180" />
-                <Card.Body>
-                    <Card.Title>Titulo</Card.Title>
-                    <Card.Text>
-                        Descripcion
-                    </Card.Text>
-                    <Card.Text>
-                        Autor
-                    </Card.Text>
-                    <Card.Text>
-                        Fecha de creacion
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+        {   
+          posteos.map((item, key) => (
+                    <Card key={key}>
+                        <Card.Img variant="top" src="holder.js/100px160" />
+                        <Card.Body>
+                        <Card.Title>{item.titulo}</Card.Title>
+                        <Card.Text>
+                        {item.descripcion}
+                        </Card.Text>
+                        </Card.Body>
+                        <Card.Subtitle className="mb-2 text-muted">{item.autor}</Card.Subtitle>
+                        <Card.Subtitle className="mb-2 text-muted">{item.createAt}</Card.Subtitle>     
+                    </Card>
+                )
+            )          
+        }
         </>
         
     );

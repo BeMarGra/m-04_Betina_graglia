@@ -80,7 +80,6 @@ posteoController.eliminarPosteo = async (req, res) => {
     try {
         const { id } = req.body;
 
-
         await PosteoModel.findByIdAndDelete(id);
 
         return res.json({ mensaje: 'Posteo eliminado con éxito' });

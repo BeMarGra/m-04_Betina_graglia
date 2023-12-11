@@ -13,6 +13,7 @@ const posteoSchema = new Schema({
         ref: 'coment'
     }],
     imagenURL: String,
+    
     createAt: {
         type: Date,
         default: Date.now,

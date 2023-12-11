@@ -1,6 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
 
-
 // Vistas
 import { Inicio } from "./views/Inicio";
 import { Ingresar } from "./views/Ingresar"
@@ -9,6 +8,7 @@ import { Usuario } from "./views/Usuario.jsx"
 import { NuevoPosteo } from "./views/NuevoPosteo.jsx"
 import { VerPosteos } from "./views/VerPosteos.jsx";
 import { Editar } from "./views/Editar.jsx";
+import { Eliminar } from "./views/Eliminar.jsx"
 
 
 // Rutas
@@ -34,6 +34,9 @@ import { Editar } from "./views/Editar.jsx";
       }, {
         path: "/editar",
         element: <Editar />,
+      }, {
+        path: "/eliminar/:id",
+        element: <Eliminar />,
       },
 
   ]);

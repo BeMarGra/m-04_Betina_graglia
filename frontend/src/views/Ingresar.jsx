@@ -1,13 +1,48 @@
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+
 import { Container, Navbar, Button, Form, Col, Row, Nav } from 'react-bootstrap';
 
 
 function Ingresar() {
+
+    const navigate = useNavigate();
+    const navigate2 = useNavigate();
+
+    const inicio = () => {
+        navigate('/')
+    };
+
+    const ingresar = () => {
+        navigate2('/usuario')
+    };
+
+    const [email, setEmail] = useState('');
+    const [password, setPaswword] = useState('');
+
+    const cambiarEmail = (e) => {
+        setEmail(e.target.value);
+    }
+
+    const cambiarPaswword = (e) => {
+        setPaswword(e.target.value);
+    }
+
+    const realizarIngreso = () => {
+        console.log(email);
+        console.log(password);
+    }
+
+    useEffect(() => {
+        realizarIngreso();
+    },[])
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand>Ingresar...</Navbar.Brand>
-                    <Nav.Link href="/" className='navPosteo'>Inicio</Nav.Link>
+                    <Nav.Link className='navPosteo' onClick={inicio}>Inicio</Nav.Link>
                 </Container>
             </Navbar>
             <br/>
@@ -17,7 +52,7 @@ function Ingresar() {
                 Email
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control plaintext readOnly defaultValue="email@example.com" />
+                <Form.Control type= "email" placeholder="email@example.com" onInput={cambiarEmail}/>
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -25,12 +60,12 @@ function Ingresar() {
                 Password
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control type="password" placeholder="Password" />
+                <Form.Control type="password" placeholder="Password" onInput={cambiarPaswword}/>
                 </Col>
             </Form.Group>
             <br/>
             <div className='botonIngresar'>
-            <Button variant="dark">Entrar</Button>
+            <Button variant="dark" onClick={realizarIngreso, ingresar}>Entrar</Button>
             </div>
             
             </Form>

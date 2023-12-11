@@ -1,24 +1,47 @@
-import { Container, Navbar, Button, Form, Col, Row, Nav, Image, Card,  } from 'react-bootstrap';
-import { CardPosteo } from './../components/CardPosteo.jsx'
+import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"; 
+
+import { Container, Navbar, Nav } from 'react-bootstrap';
+import { MiPosteo } from './../components/MiPosteo.jsx';
 
 function VerPosteos() {
+
+    const navigate = useNavigate();
+
+    const inicio = () => {
+        navigate('/usuario')
+    };
+    
+    const [posteos, setPosteos] = useState([])
+
+    const cargarPosteos = async () =>{
+        const url = 'http://localhost:3005/posteos'
+  
+        let respuesta = await fetch(url);
+  
+        if (respuesta.status === 200) {
+          respuesta = await respuesta.json();
+          setPosteos(respuesta);
+        }
+      }
+
+      useEffect(() => {
+        cargarPosteos();
+      }, [])
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand>Lista de posteos...</Navbar.Brand>
-                    <Nav.Link href="/usuario" className='navPosteo'>Inicio</Nav.Link>
+                    <Nav.Link className='navPosteo' onClick={inicio} >Inicio</Nav.Link>
                 </Container>
             </Navbar>
-            <div className='cardedicion'>
-            <CardPosteo />
-                <div>
-                    <Button variant="secondary" href='/editar'>Editar</Button>
-                    <Button variant="secondary">Eliminar</Button>
-                </div>
-            </div>
             <br/>
-            
+            <div className='cardedicion'>
+                <MiPosteo posteos={posteos}/>  
+            </div>
+
         </>
     )
 }

@@ -1,13 +1,27 @@
+import { useNavigate } from "react-router-dom";
+
 import { Container, Navbar, Button, Form, Col, Row, Nav  } from 'react-bootstrap';
 
 
 function Editar() {
+    const navigate = useNavigate();
+    const navigate2 = useNavigate();
+
+    const inicio = () => {
+        navigate('/usuario')
+    };
+
+    const editar = () => {
+        navigate2('/usuario')
+    };
+
+
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
                 <Container>
                     <Navbar.Brand>Editar posteo...</Navbar.Brand>
-                    <Nav.Link href="/usuario" className='navPosteo'>Inicio</Nav.Link>
+                    <Nav.Link className='navPosteo' onClick={inicio}>Inicio</Nav.Link>
                 </Container>
             </Navbar>
             <br/>
@@ -38,7 +52,7 @@ function Editar() {
             </Form.Group>
             <br/>
             <div className='botonIngresar'>
-            <Button variant="dark">Editar</Button>
+            <Button variant="dark" onClick={editar}>Editar</Button>
             </div>
             
             </Form>
