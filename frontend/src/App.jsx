@@ -1,14 +1,14 @@
 import { RouterProvider, } from "react-router-dom";
-import { useState } from 'react'
 import './App.css'
 import { rutas } from './router.jsx';
+import {AutProvider} from "./context/autenticacionContex.jsx";
 
-function App() {
+const App = () => {
 
   return (
-    <>
-      <RouterProvider router={rutas} />
-    </>
+      <AutProvider>
+        <RouterProvider router={rutas} />
+      </AutProvider>
   );
 }
 

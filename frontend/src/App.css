@@ -39,7 +39,9 @@
   width: 100%;
   justify-content: end;
 }
-
+.bg-body-tertiary.navbar.navbar-expand-lg.navbar-light{
+  width: 100%;
+}
 .navbar>.container{
   display: flex;
   flex-wrap: nowrap;
@@ -57,6 +59,7 @@
     align-items: flex-start;
     margin-top: 10px;
     margin-bottom: 10px;
+    margin-left: 15px;
 }
 
 .navUsuario{
@@ -78,6 +81,34 @@
   justify-content: center;
 }
 
+.mensajeBienvenida{
+  text-align: initial;
+  margin-left: 20px;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1.5rem;
+}
+
+.contenedorCards{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+
+}
+.g-2.row.row-cols-md-2.row-cols-1{
+ width: 50%;
+ height: auto;
+ padding-bottom: 0%;
+justify-content: center;
+margin-bottom: 15px;
+}
+
+.cardUsuarios{
+  width: 45%;
+  justify-content: center;
+  margin: 15px;
+}
+
 .navPosteo{
   color: aliceblue;
   margin-left: 15px;
@@ -85,8 +116,16 @@
 .cardedicion{
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin-top: 20px;
+  justify-content: center;
+}
+
+.cardVerPosteos{
+  width: 45%;
+  justify-content: center;
+  margin: 10px;
 }
 
 .col-md-4.col-6{

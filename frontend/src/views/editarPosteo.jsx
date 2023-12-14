@@ -1,26 +1,27 @@
 import axios from 'axios';
-import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-
-import { useAutContext } from "./../context/autenticacionContex.jsx";
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from "react-router-dom";
 
 import { Container, Navbar, Button, Form, Col, Row, Nav, Alert  } from 'react-bootstrap';
 
+//*****   componente */
 
-function NuevoPosteo() {
-    const navigate = useNavigate(); 
-    const { token } = useAutContext;
-    console.log('este es el token del archivo NuevoPosteo ' + token)
+function EditarPosteo() {
+    const url = 'http://localhost:3005/posteo'
+
+    const [titulo, setTitulo] = useState('');
+    const [descripcion, setDescripcion] = useState('');
+    const [imagenURL, setImagenUrl] = useState('');
+    const [deshabilitarBoton, setDeshabilitarBoton] = useState(false);
+    const [errores, setErrores] = useState({});
+
+    const navigate = useNavigate();
+
+    const { id } = useParams();
 
     const inicio = () => {
         navigate('/usuario')
     };
-
-    const [titulo, setTitulo] = useState('');
-    const [descripcion, setDescripcion] = useState('');
-    const [imagenPosteo, setImgPosteo] = useState('');
-    const [deshabilitarBoton, setDeshabilitarBoton] = useState(false);
-    const [errores, setErrores] = useState({});
 
     const cambiarTitulo = (e) => {
         setTitulo(e.target.value);
@@ -31,8 +32,10 @@ function NuevoPosteo() {
     }
 
     const cambiarImgPosteo = (e) => {
-        setImgPosteo(e.target.value);
+        setImagenUrl(e.target.value);
     }
+
+    //*********  validaciones */
 
     const ValidarDatos = async () => {
         let misErrores = {}
@@ -54,42 +57,67 @@ function NuevoPosteo() {
         if (Object.entries(misErrores).length === 0) {
         setDeshabilitarBoton(true)
 
-        await realizarPosteo();
+        await EditarPosteo();
         }
     }
 
-    const realizarPosteo = async () => {
-        const url = 'http://localhost:3005/posteo'
+    //*******   Funcionalidad editar */
+
+    const EditarPosteo = async () => {
+
         const datos = {
+            id: id,
             titulo: titulo,
             descripcion: descripcion,
-            imagenPosteo: imagenPosteo
+            imagenURL: imagenPosteo
         }
-
-        const headers = {
-            
-            token: "token"
-         }
-
         try {
-            const respuesta = await axios.post(url, datos, {headers: headers});
-
+            const respuesta = await axios.put(url, datos)
+            
             if (respuesta.status === 200){
                 return navigate('/usuario');
             }else {
-                setErrores({error: 'Ocurrio un error'})
+                setErrores({error: 'Ocurrio un error al editar el posteo'})
             }
         } catch (error) {
-            setErrores({error: 'Ocurrio un error interno' })
+            setErrores({error: 'Ocurrio un error interno'})
         }
         setDeshabilitarBoton(false);
     }
 
+        //****    traer datos del posteo a editar */
+    const traerDatosPosteo = async () =>{
+ 
+        try {
+            const respuesta = await axios.get(url+ '/' + id);
+
+            if (respuesta.status === 200){
+                const datosPosteo = respuesta.data;
+                    setTitulo(datosPosteo.titulo);
+                    setDescripcion(datosPosteo.descripcion);
+                    setImagenUrl(datosPosteo.imagenURL);
+
+            }else {
+                setErrores({error: 'Ocurrio un error al buscar el posteo'});
+                setDeshabilitarBoton(true)
+            }
+        } catch (error) {
+            setErrores({error: 'Ocurrio un error interno al mostrar los datos'});
+            setDeshabilitarBoton(true)
+        }
+    }
+
+        useEffect(() => {
+            traerDatosPosteo();
+        }, [])
+
+
+    //****  formulario renderizado */
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
                 <Container>
-                    <Navbar.Brand>Crear nuevo posteo...</Navbar.Brand>
+                    <Navbar.Brand>Editar posteo...</Navbar.Brand>
                     <Nav.Link className='navPosteo' onClick={inicio}>Inicio</Nav.Link>
                 </Container>
             </Navbar>
@@ -100,7 +128,7 @@ function NuevoPosteo() {
                     Titulo
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control type="text" placeholder="Ingrese un título para su publicación" onInput={cambiarTitulo}/>
+                <Form.Control type="text" placeholder="Ingrese un título para su publicación" onInput={cambiarTitulo} defaultValue={titulo}/>
                 {
                     errores.titulo && (<span style={{color: 'red'}}>{errores.titulo}</span>)
                 }
@@ -111,7 +139,7 @@ function NuevoPosteo() {
                     Descripcion
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control type="text" placeholder="Ingrese un breve comentario sobre su viaje" onInput={cambiarDescripcion}/>
+                <Form.Control type="text" placeholder="Ingrese un breve comentario sobre su viaje" onInput={cambiarDescripcion} defaultValue={descripcion}/>
                 {
                     errores.descripcion && (<span style={{color: 'red'}}>{errores.descripcion}</span>)
                 }
@@ -122,9 +150,9 @@ function NuevoPosteo() {
                     Foto
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control type="text" placeholder="Ingrese la direccion URL de la imagen" onInput={cambiarImgPosteo}/>
+                <Form.Control type="text" placeholder="Ingrese la direccion URL de la imagen" onInput={cambiarImgPosteo} defaultValue={imagenURL}/>
                 {
-                    errores.imagenPosteo && (<span style={{color: 'red'}}>{errores.imagenPosteo}</span>)
+                    errores.imagenURL && (<span style={{color: 'red'}}>{errores.imagenURL}</span>)
                 }
                 </Col>
             </Form.Group>
@@ -138,7 +166,7 @@ function NuevoPosteo() {
             <br/>
             <div className='botonIngresar'>
             <Button variant="dark" onClick={ValidarDatos} disabled={deshabilitarBoton}>
-                Publicar
+                Editar
             </Button>
             </div>
             </Form>
@@ -146,4 +174,4 @@ function NuevoPosteo() {
     )
 }
 
-export { NuevoPosteo }
+export { EditarPosteo }

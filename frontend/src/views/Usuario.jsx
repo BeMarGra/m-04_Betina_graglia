@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react"; 
+import { useAutContext } from "../context/autenticacionContex.jsx";
 
-import { Container, Navbar, Col, Nav, Image, } from 'react-bootstrap';
+import { Container, Navbar, Col, Nav, Image, CardBody, } from 'react-bootstrap';
 
-import {CardPosteo} from './../components/CardPosteo.jsx'
+import CardPosteo from './../components/CardPosteo.jsx'
 
 function Usuario() {
     const navigate = useNavigate();
@@ -18,11 +19,8 @@ function Usuario() {
         navigate2('/verposteos');
     }
 
-    const salir = () => {
-        navigate3('/');
-    };
-
     const [posteos, setPosteos] = useState([])
+    const { usuario, cerrarSecion } = useAutContext();
 
     const cargarPosteos = async () =>{
         const url = 'http://localhost:3005/posteos'
@@ -38,6 +36,11 @@ function Usuario() {
       useEffect(() => {
         cargarPosteos();
       }, [])
+
+      const salir = () => {
+        cerrarSecion()
+        navigate3('/');
+      }
 
     return (
         <>
@@ -58,7 +61,12 @@ function Usuario() {
                 </Container>
             </Navbar>
             <br/>
-            <CardPosteo posteos={posteos}/>
+            <CardBody>
+                <div className="mensajeBienvenida">
+                { usuario ?('Bienvenid@ ' + usuario.username ): ''}
+                </div>
+                <CardPosteo posteos={posteos}/>
+            </CardBody>
         </>
     );
 }

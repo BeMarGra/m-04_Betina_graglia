@@ -18,10 +18,10 @@ body {
   display: flex;
   justify-items: center;
   min-width: 100vh;
-  min-height: 100vh;
+  min-height: 100%;
   background-image: url('/world_map_PNG34.png');
   background-size: 100%;
-  background-repeat: no-repeat;
+  background-repeat: repeat;
 }
 
 h1 {

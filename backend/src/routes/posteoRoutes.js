@@ -9,11 +9,13 @@ const {
 
 } = require('./../controllers/posteoControllers.js');
 
+const { verificarToken } = require('../controllers/AutenticarControllers.js');
+
 // Ver posteos
 posteoRoutes.get('/posteos', verPosteos);
 
 // Ver un posteo
-posteoRoutes.get('/posteo:id', verPosteo);
+posteoRoutes.get('/posteo/:id', verPosteo);
 
 
 // Crear posteo

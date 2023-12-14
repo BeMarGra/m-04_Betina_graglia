@@ -1,4 +1,6 @@
 const PosteoModel = require('../modells/PosteoModel');
+const { verificarToken } = require ('./../utils/token.js')
+
 const posteoController = {};
 
 // Ver posteos
@@ -20,9 +22,9 @@ posteoController.verPosteo = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const usuarioEncontrado = await PosteoModel.findById(id);
+        const posteoEncontrado = await PosteoModel.findById(id);
                
-        return res.json(usuarioEncontrado);
+        return res.json(posteoEncontrado);
     } catch (error) {
         let mensaje = 'Ocurrió un error interno';
 
@@ -41,12 +43,26 @@ posteoController.verPosteo = async (req, res) => {
 posteoController.crearPosteo = async (req, res) => {
     try {
         const { titulo, descripcion, imagenURL } = req.body;
-        const nuevoUsuario = new PosteoModel({
+
+            const { token } = req.headers
+            console.log(token)
+
+            const tokenValido = false //verificarToken(token)
+            
+            if (!tokenValido) {
+                return res.status(500).json({
+                    mensaje: 'El token no es valido',
+                    error: error
+                })
+
+            }
+
+        const nuevoPosteo = new PosteoModel({
             titulo: titulo,
             descripcion: descripcion,
             imagenURL: imagenURL,
         });
-        await nuevoUsuario.save();
+        await nuevoPosteo.save();
         return res.json({ mensaje: 'Posteo realizado con éxito' });
     } catch (error) {
         return res.status(500).json({
@@ -59,7 +75,9 @@ posteoController.crearPosteo = async (req, res) => {
 // Editar posteo
 posteoController.editarPosteo = async (req, res) => {
     try {
-        const { id,titulo, descripcion, imagenURLL } = req.body;
+        const { id,titulo, descripcion, imagenURLL, autor } = req.body;
+
+        // validar autor
 
         await PosteoModel.findByIdAndUpdate(
             id,

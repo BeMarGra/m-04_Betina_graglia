@@ -1,10 +1,12 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import axios from "axios";
 
-import { Container, Navbar, Button, Form, Col, Row, Nav } from 'react-bootstrap';
+import { useAutContext } from "../context/autenticacionContex";
 
+import { Container, Navbar, Button, Form, Col, Row, Nav, Alert } from 'react-bootstrap';
 
-function Ingresar() {
+const Ingresar = () => {
 
     const navigate = useNavigate();
     const navigate2 = useNavigate();
@@ -13,12 +15,12 @@ function Ingresar() {
         navigate('/')
     };
 
-    const ingresar = () => {
-        navigate2('/usuario')
-    };
-
     const [email, setEmail] = useState('');
     const [password, setPaswword] = useState('');
+    const [deshabilitarBoton, setDeshabilitarBoton] = useState(false);
+    const [errores, setErrores] = useState({});
+
+    const { abrirSecion } = useAutContext();
 
     const cambiarEmail = (e) => {
         setEmail(e.target.value);
@@ -28,14 +30,53 @@ function Ingresar() {
         setPaswword(e.target.value);
     }
 
-    const realizarIngreso = () => {
-        console.log(email);
-        console.log(password);
+    const realizarLogin = async () =>{
+
+        const url = 'http://localhost:3005/autenticar'
+        const datos = {
+            email : email,
+            password: password,
+    }
+        try {
+            const respuesta = await axios.post(url, datos)
+        
+            if (respuesta.status === 200){
+                const {token, datos} = respuesta.data;
+
+                abrirSecion(datos, token);
+                console.log(datos)
+                console.log(token)
+                navigate2('/usuario');
+
+            }else {
+                setErrores({error: 'Los datos no corresponden a un usuario registrado'})
+            }
+        } catch (error) {
+            setErrores({error: 'Ocurrio un error interno'})
+        }
+        setDeshabilitarBoton(false);
     }
 
-    useEffect(() => {
-        realizarIngreso();
-    },[])
+    const ValidarDatos = async () => {
+        let misErrores = {}
+
+        if (email.length === 0) {
+            misErrores.email = 'Debe ingresar una direccion de mail';
+        }
+
+        if (password.length === 0) {
+            misErrores.password = 'Debe ingresar una contraseña';
+        }
+        
+        setErrores(misErrores);
+
+        if (Object.entries(misErrores).length === 0) {
+            setDeshabilitarBoton(true)
+
+        await realizarLogin();
+        }
+
+    }
 
     return (
         <>
@@ -53,6 +94,9 @@ function Ingresar() {
                 </Form.Label>
                 <Col sm="10">
                 <Form.Control type= "email" placeholder="email@example.com" onInput={cambiarEmail}/>
+                {
+                    errores.email && (<span style={{color: 'red'}}>{errores.email}</span>)
+                }
                 </Col>
             </Form.Group>
             <Form.Group as={Row} className="mb-3" controlId="formPlaintextPassword">
@@ -61,11 +105,17 @@ function Ingresar() {
                 </Form.Label>
                 <Col sm="10">
                 <Form.Control type="password" placeholder="Password" onInput={cambiarPaswword}/>
+                {
+                    errores.password && (<span style={{color: 'red'}}>{errores.password}</span>)
+                }
                 </Col>
             </Form.Group>
             <br/>
+            {
+            errores.error && (<Alert variant="warning">{errores.error}</Alert>)
+            }      
             <div className='botonIngresar'>
-            <Button variant="dark" onClick={realizarIngreso, ingresar}>Entrar</Button>
+            <Button variant="dark" onClick={ValidarDatos} defaultValue={deshabilitarBoton}>Entrar</Button>
             </div>
             
             </Form>

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { Container, Navbar, Button, } from 'react-bootstrap';
 
 import CardInicio from './../components/CardInicio.jsx'
+import { useAutContext } from "../context/autenticacionContex.jsx";
 
 
 const Inicio = () => {
@@ -20,9 +21,9 @@ const Inicio = () => {
     navigate2('/registro')
   };
 
-
-
     const [posteos, setPosteos] = useState([])
+
+    const autContext = useAutContext();
 
     //Llamado al servidor
 
@@ -39,6 +40,7 @@ const Inicio = () => {
     
     useEffect(() => {
       cargarPosteos();
+      console.log(autContext)
     }, [])
 
     return (
