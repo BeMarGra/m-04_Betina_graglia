@@ -4,14 +4,14 @@ const posteoSchema = new Schema({
 
     titulo: String,
     descripcion: String,
-    autor: [{
+    autor: {
         type: Schema.Types.ObjectId,
         ref: 'user'
-    }],
-    comentario: [{
+    },
+    comentario: {
         type: Schema.Types.ObjectId,
         ref: 'coment'
-    }],
+    },
     imagenURL: String,
     
     createAt: {

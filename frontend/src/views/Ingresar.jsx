@@ -44,8 +44,6 @@ const Ingresar = () => {
                 const {token, datos} = respuesta.data;
 
                 abrirSecion(datos, token);
-                console.log(datos)
-                console.log(token)
                 navigate2('/usuario');
 
             }else {

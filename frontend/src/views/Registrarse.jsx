@@ -66,15 +66,15 @@ function Registrarse() {
         const url = 'http://localhost:3005/usuario'
         const datos = {
             username: usuario,
-            password: email,
-            email : password,
+            password: password,
+            email : email,
             avatarURL: imagenUsuario
         }
         try {
             const respuesta = await axios.post(url, datos)
         
             if (respuesta.status === 200){
-                return navigate('/usuario');
+                return navigate('/');
             }else {
                 setErrores({error: 'Ocurrio un error'})
             }

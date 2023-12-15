@@ -9,8 +9,7 @@ import { Container, Navbar, Button, Form, Col, Row, Nav, Alert  } from 'react-bo
 
 function NuevoPosteo() {
     const navigate = useNavigate(); 
-    const { token } = useAutContext;
-    console.log('este es el token del archivo NuevoPosteo ' + token)
+    const { token } = useAutContext();
 
     const inicio = () => {
         navigate('/usuario')
@@ -18,7 +17,7 @@ function NuevoPosteo() {
 
     const [titulo, setTitulo] = useState('');
     const [descripcion, setDescripcion] = useState('');
-    const [imagenPosteo, setImgPosteo] = useState('');
+    const [imagenURL, setImgPosteo] = useState('');
     const [deshabilitarBoton, setDeshabilitarBoton] = useState(false);
     const [errores, setErrores] = useState({});
 
@@ -45,8 +44,8 @@ function NuevoPosteo() {
             misErrores.descripcion = 'Debe ingresar una descripción';
         }
 
-        if (imagenPosteo.length === 0) {
-            misErrores.imagenPosteo = 'Debe ingresar la url de la imágen del posteo';
+        if (imagenURL.length === 0) {
+            misErrores.imagenURL = 'Debe ingresar la url de la imágen del posteo';
         }
 
         setErrores(misErrores);
@@ -63,16 +62,15 @@ function NuevoPosteo() {
         const datos = {
             titulo: titulo,
             descripcion: descripcion,
-            imagenPosteo: imagenPosteo
+            imagenURL: imagenURL,
         }
 
         const headers = {
-            
-            token: "token"
-         }
+            token: token
+        }
 
-        try {
-            const respuesta = await axios.post(url, datos, {headers: headers});
+         try {
+            const respuesta = await axios.post(url, datos, { headers: headers });
 
             if (respuesta.status === 200){
                 return navigate('/usuario');
@@ -124,7 +122,7 @@ function NuevoPosteo() {
                 <Col sm="10">
                 <Form.Control type="text" placeholder="Ingrese la direccion URL de la imagen" onInput={cambiarImgPosteo}/>
                 {
-                    errores.imagenPosteo && (<span style={{color: 'red'}}>{errores.imagenPosteo}</span>)
+                    errores.imagenURL && (<span style={{color: 'red'}}>{errores.imagenURL}</span>)
                 }
                 </Col>
             </Form.Group>

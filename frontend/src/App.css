@@ -6,6 +6,14 @@
   text-align: center;
 }
 
+.contentInicio{
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  height: 100%;
+  justify-content: space-around;
+}
+
 .bg-body-tertiary{
   width: 100%;
   height: 10%;
@@ -120,6 +128,39 @@ margin-bottom: 15px;
   flex-wrap: wrap;
   margin-top: 20px;
   justify-content: center;
+}
+
+.content{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.cardVerUnPosteo{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 80%;
+  height: 200px;
+  padding: 0px;
+}
+
+.cardVerUnPosteoImg{
+  width: 40%;
+  border-style: ridge;
+  border-radius: 5px;
+}
+
+.cardVerUnPosteoImg.Card{
+  width: 100%;
+  height: 100%;
+
+}
+
+.cardVerUnPosteoTxt{
+  width: 60%;
+  border-style: ridge;
+  border-radius: 5PX;
 }
 
 .cardVerPosteos{

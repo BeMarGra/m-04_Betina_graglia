@@ -29,7 +29,6 @@ AutenticarController.autenticar = async (req, res) => {
 
         res.json({ token: token, datos: datos });
     } catch (error) {
-        console.log(error)
         return res.status(500).json({ mensaje: 'Se produjo un error interno.' });
     }
 }

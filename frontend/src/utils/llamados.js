@@ -7,6 +7,7 @@ const traerDatosDePosteoPorID = async (id) => {
 
     try {
         const respuesta = await axios.get(endpoint);
+        console.log(respuesta + 'posteos')
 
         if (respuesta.status === 200) {
             return respuesta.data;
@@ -19,10 +20,11 @@ const traerDatosDePosteoPorID = async (id) => {
 }
 
 const traerComentariosDePosteoPorID = async (idPosteo) => {
-    const endpoint = url + 'comentario/' + idPosteo;
+    const endpoint = url + 'comentarios/' + idPosteo;
 
     try {
         const respuesta = await axios.get(endpoint);
+        console.log(respuesta + 'comentarios')
 
         if (respuesta.status === 200) {
             return respuesta.data;

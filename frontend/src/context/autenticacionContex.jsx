@@ -2,7 +2,7 @@ import { createContext, useContext, useState } from "react";
 import { guardarDatos, 
         guardarToken, 
         traerDatos, 
-        traertoken, 
+        traerToken, 
         limpiarLocalStorage 
     } from "../utils/logueo";
 
@@ -13,7 +13,7 @@ const AutProvider = (props) => {
     const { children } = props;
 
     const [usuario, setUsuario] = useState(traerDatos());
-    const [token, setToken] = useState(traertoken());
+    const [token, setToken] = useState(traerToken());
 
     const abrirSecion = (datos, token) =>{
         guardarDatos(datos);

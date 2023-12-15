@@ -2,29 +2,29 @@ const comentRoutes = require('express').Router();
 
 const {
     verComentarios,
-    verComentario,
+    //verComentario,
     crearComentario,
-    editarComentario,
-    eliminarComentario,
+    //editarComentario,
+    //eliminarComentario,
 
 } = require('./../controllers/comentControllers.js');
 
 
 // Ver posteos
-comentRoutes.get('/comentarios', verComentarios);
+comentRoutes.get('/comentarios/:idPosteo', verComentarios);
 
 // Ver un posteo
-comentRoutes.get('/comentario:id', verComentario);
+//comentRoutes.get('/comentario:id', verComentario);
 
 
 // Crear posteo
 comentRoutes.post('/comentario', crearComentario);
 
 // Editar posteo
-comentRoutes.put('/comentario', editarComentario);
+//comentRoutes.put('/comentario', editarComentario);
 
 // Eliminar posteo
-comentRoutes.delete('/comentario', eliminarComentario);
+//comentRoutes.delete('/comentario', eliminarComentario);
 
 
 module.exports = comentRoutes

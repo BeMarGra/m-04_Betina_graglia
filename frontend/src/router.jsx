@@ -6,9 +6,9 @@ import { Ingresar } from "./views/Ingresar"
 import { Registrarse } from "./views/Registrarse"
 import { Usuario } from "./views/Usuario.jsx"
 import { NuevoPosteo } from "./views/NuevoPosteo.jsx"
-import { VerPosteos } from "./views/VerPosteos.jsx";
 import { EditarPosteo } from "./views/editarPosteo.jsx"
 import { Eliminar } from "./views/Eliminar.jsx"
+import { VerPosteo } from "./views/VerPosteo.jsx";
 
 
 // Rutas
@@ -29,8 +29,8 @@ import { Eliminar } from "./views/Eliminar.jsx"
         path: "/nuevoposteo",
         element: <NuevoPosteo />,
       }, {
-        path: "/verposteos",
-        element: <VerPosteos />,
+        path: "/posteo/:id",
+        element: <VerPosteo />,
       }, {
         path: "/editar/:id",
         element: <EditarPosteo />,

@@ -1,11 +1,16 @@
 const { Schema, model } = require('mongoose');
 
 const comentSchema = new Schema({
-    autor: [{
+    comentario: String,
+    autor: {
         type: Schema.Types.ObjectId,
         ref: 'user'
-    }],
-    descripcion: String,
+    },
+    posteo: {
+        type: Schema.Types.ObjectId,
+        ref: 'posteo'
+    },
+    
 });
 
 const ComentModel = model('coment', comentSchema);

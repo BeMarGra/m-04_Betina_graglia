@@ -4,9 +4,15 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { Container, Navbar, Button, Form, Col, Row, Nav, Alert  } from 'react-bootstrap';
 
+import {useAutContext} from "../context/autenticacionContex.jsx"
+import { traerDatosDePosteoPorID }  from "../utils/llamados.js"
+
 //*****   componente */
 
 function EditarPosteo() {
+    const { id } = useParams();
+    const { token, usuario} = useAutContext();
+
     const url = 'http://localhost:3005/posteo'
 
     const [titulo, setTitulo] = useState('');
@@ -17,7 +23,7 @@ function EditarPosteo() {
 
     const navigate = useNavigate();
 
-    const { id } = useParams();
+   
 
     const inicio = () => {
         navigate('/usuario')
@@ -31,7 +37,7 @@ function EditarPosteo() {
         setDescripcion(e.target.value);
     }
 
-    const cambiarImgPosteo = (e) => {
+    const cambiarimagenURL = (e) => {
         setImagenUrl(e.target.value);
     }
 
@@ -48,7 +54,7 @@ function EditarPosteo() {
             misErrores.descripcion = 'Debe ingresar una descripción';
         }
 
-        if (imagenPosteo.length === 0) {
+        if (imagenURL.length === 0) {
             misErrores.imagenPosteo = 'Debe ingresar la url de la imágen del posteo';
         }
 
@@ -69,10 +75,15 @@ function EditarPosteo() {
             id: id,
             titulo: titulo,
             descripcion: descripcion,
-            imagenURL: imagenPosteo
+            imagenURL: imagenURL,
         }
+
+        const headers = {
+            token: token
+        }
+
         try {
-            const respuesta = await axios.put(url, datos)
+            const respuesta = await axios.put(url, datos, { headers: headers })
             
             if (respuesta.status === 200){
                 return navigate('/usuario');
@@ -88,29 +99,28 @@ function EditarPosteo() {
         //****    traer datos del posteo a editar */
     const traerDatosPosteo = async () =>{
  
-        try {
-            const respuesta = await axios.get(url+ '/' + id);
+        if (usuario) {
+            const respuesta = await traerDatosDePosteoPorID(id)
 
-            if (respuesta.status === 200){
-                const datosPosteo = respuesta.data;
-                    setTitulo(datosPosteo.titulo);
-                    setDescripcion(datosPosteo.descripcion);
-                    setImagenUrl(datosPosteo.imagenURL);
+            if( respuesta) {
+                if(usuario.id !== respuesta.autor){
+                    return navigate('/usuario')
+                }
 
-            }else {
-                setErrores({error: 'Ocurrio un error al buscar el posteo'});
-                setDeshabilitarBoton(true)
+                setTitulo(respuesta.titulo)
+                setDescripcion(respuesta.descripcion)
+            } else {
+                setErrores({ error: 'Ocurrió un error inesperado. No se pudo obtener la publicación' });
+                setDeshabilitarBoton(true);
             }
-        } catch (error) {
-            setErrores({error: 'Ocurrio un error interno al mostrar los datos'});
-            setDeshabilitarBoton(true)
+        } else {
+            return navigate('/usuario')
         }
     }
 
         useEffect(() => {
             traerDatosPosteo();
         }, [])
-
 
     //****  formulario renderizado */
     return (
@@ -150,7 +160,7 @@ function EditarPosteo() {
                     Foto
                 </Form.Label>
                 <Col sm="10">
-                <Form.Control type="text" placeholder="Ingrese la direccion URL de la imagen" onInput={cambiarImgPosteo} defaultValue={imagenURL}/>
+                <Form.Control type="text" placeholder="Ingrese la direccion URL de la imagen" onInput={cambiarimagenURL} defaultValue={imagenURL}/>
                 {
                     errores.imagenURL && (<span style={{color: 'red'}}>{errores.imagenURL}</span>)
                 }
