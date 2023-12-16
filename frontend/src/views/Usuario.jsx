@@ -16,7 +16,7 @@ function Usuario() {
 
 
     const [posteos, setPosteos] = useState([])
-    const { usuario, cerrarSecion } = useAutContext();
+    const { usuario, cerrarSecion, token } = useAutContext();
 
     const cargarPosteos = async () =>{
         const url = 'http://localhost:3005/posteos'

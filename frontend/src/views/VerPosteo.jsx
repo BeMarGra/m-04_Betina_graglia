@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import {  Container, Navbar,  Nav, Card, Accordion, Button, FloatingLabel, Form   } from 'react-bootstrap';
+import {  Container, Navbar,  Nav, Card,  Button, FloatingLabel, Form   } from 'react-bootstrap';
 import { useParams, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
@@ -54,7 +54,7 @@ const VerPosteo = () => {
     }
 
     const enviarComentario = async () => {
-        const url = 'http://localhost:3000/comentarios';
+        const url = 'http://localhost:3005/comentario';
 
         const datos = {
             descripcion: miComentario,
@@ -116,14 +116,13 @@ const VerPosteo = () => {
 
                     {/*********** comentar ***********/}
                     <div style= {{display: 'flex', justifyContent: 'center'}}>
-                    <Card label="Deje su comentario aquí" style={{ width: '70%',  }}>
+                    <Card label="Deje su comentario aquí" style={{ width: '70%' }}>
                         <p>Deje su comentario aquí</p>
                         <FloatingLabel controlId="floatingTextarea2" >
                             <Form.Control
                             onInput={(e) => setMiComentario(e.target.value)}
                             value={miComentario}
                             as="textarea"
-                            style={{ height: 'auto'}}
                             />
                         </FloatingLabel>
                     </Card>
@@ -135,23 +134,18 @@ const VerPosteo = () => {
                     {   
                     comentario.map((comentario, key) =>(
                     <div className='contentComentarios' key={key}>
-                            <Accordion>
-                                <Accordion.Item eventKey="0">
-                                    <Accordion.Header>{comentario.autor.username}</Accordion.Header>
-                                    <Accordion.Body>
-                                        <p>
-                                        {comentario.descripcion}
-                                        </p>
-                                        <br/>
-                                        <div>
-                                            <Button variant="secondary" onClick={() => editar(item._id)}>Editar</Button>
-                                            <Button variant="secondary" onClick={() => eliminar(item._id)}>Eliminar</Button>
-                                        </div>
-                                </Accordion.Body>
-                            
-                            </Accordion.Item>
-
-                            </Accordion>
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title
+                                    onInput={(e) => setMiComentario(e.target.value)}
+                                    value={miComentario}> </Card.Title>
+                           
+                                </Card.Body>
+                                <span>
+                                <Button variant="secondary" style={{width: '85px'}}>Editar</Button>
+                                <Button variant="secondary"style={{width: '85px'}}>Eliminar</Button>
+                                </span>
+                            </Card>
                     </div>
                     ))
                     }
