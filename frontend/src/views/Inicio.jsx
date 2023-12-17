@@ -40,7 +40,6 @@ const Inicio = () => {
     
     useEffect(() => {
       cargarPosteos();
-      console.log(autContext)
     }, [])
 
     return (

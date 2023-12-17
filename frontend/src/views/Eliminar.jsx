@@ -25,7 +25,7 @@ function Eliminar() {
             const respuesta = await axios.delete(url, {data: {id: id } });
 
             if (respuesta.status === 200) {
-                return navigate2('/verposteos');
+                return navigate2('/usuario');
             } else {
                 setErrores('Ocurrio un error al borrar el posteo')
             }

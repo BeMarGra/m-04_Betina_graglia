@@ -19,7 +19,7 @@ const VerPosteo = () => {
     const [descripcion, setDescripcion] = useState('');
     const [autor, setAutor] = useState('{}');
     const [miComentario, setMiComentario] = useState('');
-    const [comentario, setComentarios] = useState([]);
+    const [comentarios, setComentarios] = useState([]);
 
     const navigate = useNavigate();
 
@@ -29,7 +29,7 @@ const VerPosteo = () => {
 
     const traerDatos = async () => {
         const respuesta = await traerDatosDePosteoPorID(id);
-        console.log (respuesta)
+        
         if (respuesta) {
             
             setTitulo(respuesta.titulo);
@@ -47,7 +47,7 @@ const VerPosteo = () => {
         const respuesta = await traerComentariosDePosteoPorID(id);
         if (respuesta) {
             setComentarios(respuesta);
-     
+            
         } else {
             console.log('No se pudo obtener los comentarios de la publicación');
         }
@@ -57,7 +57,7 @@ const VerPosteo = () => {
         const url = 'http://localhost:3005/comentario';
 
         const datos = {
-            descripcion: miComentario,
+            comentario: miComentario,
             idPosteo: id,
         }
 
@@ -108,7 +108,7 @@ const VerPosteo = () => {
                                 {descripcion}
                                 </Card.Text>
                                 </Card.Body>
-                                <Card.Subtitle className="mb-2 text-muted">{autor.username}</Card.Subtitle> 
+                                <Card.Subtitle className="mb-2 text-muted">{autor}</Card.Subtitle> 
                             </div>
                         </Card>             
                      </div>
@@ -132,13 +132,13 @@ const VerPosteo = () => {
 
                         {/*********** ver***********/}
                     {   
-                    comentario.map((comentario, key) =>(
+                    comentarios.map((comentario, key) =>(
                     <div className='contentComentarios' key={key}>
                             <Card>
                                 <Card.Body>
                                     <Card.Title
-                                    onInput={(e) => setMiComentario(e.target.value)}
-                                    value={miComentario}> </Card.Title>
+                                    onInput={(e) => setComentarios(e.target.value)}
+                                    value={comentario}> {comentario.comentario} </Card.Title>
                            
                                 </Card.Body>
                                 <span>

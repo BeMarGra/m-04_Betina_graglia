@@ -68,8 +68,7 @@ function NuevoPosteo() {
         const headers = {
             token: token
         }
-        console.log(headers)
-        console.log(datos)
+
          try {
             const respuesta = await axios.post(url, datos, { headers: headers });
 

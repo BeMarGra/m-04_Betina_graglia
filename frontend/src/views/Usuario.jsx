@@ -1,4 +1,4 @@
-import { useHref, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react"; 
 import { useAutContext } from "../context/autenticacionContex.jsx";
 
@@ -22,8 +22,6 @@ function Usuario() {
         const url = 'http://localhost:3005/posteos'
   
         let respuesta = await fetch(url);
-        console.log(respuesta)
-  
         if (respuesta.status === 200) {
           respuesta = await respuesta.json();
           setPosteos(respuesta);

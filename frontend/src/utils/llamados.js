@@ -2,12 +2,12 @@ import axios from 'axios';
 
 const url = 'http://localhost:3005/';
 
+
 const traerDatosDePosteoPorID = async (id) => {
     const endpoint = url + 'posteo/' + id;
 
     try {
         const respuesta = await axios.get(endpoint);
-        console.log(respuesta + 'posteos')
 
         if (respuesta.status === 200) {
             return respuesta.data;
@@ -24,7 +24,6 @@ const traerComentariosDePosteoPorID = async (idPosteo) => {
 
     try {
         const respuesta = await axios.get(endpoint);
-        console.log(respuesta + 'comentarios')
 
         if (respuesta.status === 200) {
             return respuesta.data;
@@ -36,6 +35,7 @@ const traerComentariosDePosteoPorID = async (idPosteo) => {
     }
 }
 
+    
 export {
     traerDatosDePosteoPorID,
     traerComentariosDePosteoPorID,
